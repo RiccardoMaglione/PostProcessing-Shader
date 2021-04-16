@@ -5,6 +5,7 @@
 		[NoScaleOffset] _Texture1("Texture 1", 2D) = "white" {}
 		[NoScaleOffset] _Texture2("Texture 2", 2D) = "white" {}
 		[NoScaleOffset] _Texture3("Texture 3", 2D) = "white" {}
+		[NoScaleOffset] _Texture4("Texture 3", 2D) = "white" {}
 	}
 
 		SubShader{
@@ -20,7 +21,7 @@
 				sampler2D _MainTex;
 				float4 _MainTex_ST;
 
-				sampler2D _Texture1, _Texture2, _Texture3;
+				sampler2D _Texture1, _Texture2, _Texture3, _Texture4;
 
 				struct VertexData {
 					float4 position : POSITION;
@@ -46,7 +47,8 @@
 					return
 						tex2D(_Texture1, i.uv) * splat.r +
 						tex2D(_Texture2, i.uv) * splat.g +
-						tex2D(_Texture3, i.uv) * (1 - splat.r - splat.g);
+						tex2D(_Texture3, i.uv) * splat.b +
+						tex2D(_Texture4, i.uv) * (1 - splat.r - splat.g - splat.b);
 				}
 
 				ENDHLSL
