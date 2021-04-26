@@ -1,5 +1,44 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7768575760920386047
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558a8e2b6826cf840aae193990ba9f2e, type: 3}
+  m_Name: ShadowsMidtonesHighlights
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  shadows:
+    m_OverrideState: 1
+    m_Value: {x: 0.101306915, y: 0, z: 1, w: 0}
+  midtones:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 0.829394, z: 0, w: 0}
+  highlights:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 0.32756394, z: 0, w: 0}
+  shadowsStart:
+    m_OverrideState: 1
+    m_Value: 0.3
+    min: 0
+  shadowsEnd:
+    m_OverrideState: 1
+    m_Value: 0.3
+    min: 0
+  highlightsStart:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+  highlightsEnd:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
 --- !u!114 &-2138716548712815364
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -87,6 +126,7 @@ MonoBehaviour:
   - {fileID: -2138716548712815364}
   - {fileID: 4689449715088111832}
   - {fileID: -360806225903809397}
+  - {fileID: -7768575760920386047}
 --- !u!114 &4689449715088111832
 MonoBehaviour:
   m_ObjectHideFlags: 3
