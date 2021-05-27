@@ -8,74 +8,35 @@
 sampler2D _MainTex;					//1
 float4 _MainTex_ST;
 
-sampler2D _Texture1;				//2
-SamplerState sampler_Texture1;
-float4 _Texture1_ST;
-sampler2D _DetailTexture1;			//3
-float4 _DetailTexture1_ST;
+SamplerState sampler_Texture1, sampler_DetailTexture1, sampler_NormalMap1, sampler_DetailNormalMap1;
 
-sampler2D _Texture2;				//4
-float4 _Texture2_ST;
-sampler2D _DetailTexture2;			//5
-float4 _DetailTexture2_ST;
+Texture2D _Texture1, _Texture2, _Texture3, _Texture4, _Texture5, _Texture6, _Texture7, _Texture8;
+float4 _Texture1_ST, _Texture2_ST, _Texture3_ST, _Texture4_ST, _Texture5_ST, _Texture6_ST, _Texture7_ST, _Texture8_ST;
 
-sampler2D _Texture3;				//6
-float4 _Texture3_ST;
-sampler2D _DetailTexture3;			//7
-float4 _DetailTexture3_ST;
+Texture2D _DetailTexture1, _DetailTexture2, _DetailTexture3, _DetailTexture4, _DetailTexture5, _DetailTexture6, _DetailTexture7, _DetailTexture8;
+float4 _DetailTexture1_ST, _DetailTexture2_ST, _DetailTexture3_ST, _DetailTexture4_ST, _DetailTexture5_ST, _DetailTexture6_ST, _DetailTexture7_ST, _DetailTexture8_ST;
 
-sampler2D _Texture4;				//8
-float4 _Texture4_ST;
-sampler2D _DetailTexture4;			//9
-float4 _DetailTexture4_ST;
-
-//sampler2D _Texture5;				//10
-//float4 _Texture5_ST;
-//sampler2D _DetailTexture5;		//11
-//float4 _DetailTexture5_ST;
-//
-//sampler2D _Texture6;				//12
-//float4 _Texture6_ST;
-//sampler2D _DetailTexture6;		//13
-//float4 _DetailTexture6_ST;
-//
-//sampler2D _Texture7;				//14
-//float4 _Texture7_ST;
-//sampler2D _DetailTexture7;		//15
-//float4 _DetailTexture7_ST;
-//
-//sampler2D _Texture8;				//16
-//float4 _Texture8_ST;
-//sampler2D _DetailTexture8;		//17
-//float4 _DetailTexture8_ST;
 
 float4 _Offset;
-float _FirstAngle;
-float _SecondAngle;
-float _ThirdAngle;
+float _FirstAngle, _SecondAngle, _ThirdAngle;
 
 float _Smoothness;
 float _Metallic;
-sampler2D _MainTexAlbedo;			//togliere
-float4 _MainTexAlbedo_ST;
-float4 _Tint;
-sampler2D _NormalMap, _DetailNormalMap;		//togliere
-float _BumpScale, _DetailBumpScale;
 
+//sampler2D _MainTexAlbedo;			//togliere
+//float4 _MainTexAlbedo_ST;
 
-sampler2D _NormalMap1, _DetailNormalMap1;		//18		//19
-sampler2D _NormalMap2, _DetailNormalMap2;		//20		//21
-//sampler2D _NormalMap3, _DetailNormalMap3;		//22		//23
-//sampler2D _NormalMap4, _DetailNormalMap4;		//24		//25
-//sampler2D _NormalMap5, _DetailNormalMap5;		//26		//27
-//sampler2D _NormalMap6, _DetailNormalMap6;		//28		//29
-//sampler2D _NormalMap7, _DetailNormalMap7;		//30		//31
-//sampler2D _NormalMap8, _DetailNormalMap8;		//32		//33
+//float4 _Tint;
 
-float _BumpScale1, _DetailBumpScale1;
-//float _BumpScale2, _DetailBumpScale2;
-//float _BumpScale3, _DetailBumpScale3;
-//float _BumpScale4, _DetailBumpScale4;
+//sampler2D _NormalMap, _DetailNormalMap;		//togliere
+//float _BumpScale, _DetailBumpScale;
+
+Texture2D _NormalMap1, _NormalMap2, _NormalMap3, _NormalMap4, _NormalMap5, _NormalMap6, _NormalMap7, _NormalMap8;
+Texture2D _DetailNormalMap1, _DetailNormalMap2, _DetailNormalMap3, _DetailNormalMap4, _DetailNormalMap5, _DetailNormalMap6, _DetailNormalMap7, _DetailNormalMap8;
+
+float _BumpScale1, _BumpScale2, _BumpScale3, _BumpScale4, _BumpScale5, _BumpScale6, _BumpScale7, _BumpScale8;
+float _DetailBumpScale1, _DetailBumpScale2, _DetailBumpScale3, _DetailBumpScale4, _DetailBumpScale5, _DetailBumpScale6, _DetailBumpScale7, _DetailBumpScale8;
+
 
 struct VertexData {
 	float4 position : POSITION;
@@ -90,17 +51,17 @@ struct Interpolators {
 	float2 uvSplat : TEXCOORD1;
 	//float4 uvDetail : TEXCOORD2;
 	float3 normal : TEXCOORD2;
-#if defined(BINORMAL_PER_FRAGMENT)
-	float4 tangent : TEXCOORD3;
-#else
-	float3 tangent : TEXCOORD4;
-	float3 binormal : TEXCOORD5;
-#endif
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float4 tangent : TEXCOORD3;
+	#else
+		float3 tangent : TEXCOORD4;
+		float3 binormal : TEXCOORD5;
+	#endif
 	float3 worldPos : TEXCOORD6;
 
-
 	#if defined(VERTEXLIGHT_ON)
-	float3 vertexLightColor : TEXCOORD7;
+		float3 vertexLightColor : TEXCOORD7;
 	#endif
 };
 
@@ -112,16 +73,18 @@ struct g2f
 	float2 uvSplat : TEXCOORD1;
 	//float2 uvDetail : TEXCOORD2;
 	float3 normal : TEXCOORD2;
-#if defined(BINORMAL_PER_FRAGMENT)
-	float4 tangent : TEXCOORD3;
-#else
-	float3 tangent : TEXCOORD4;
-	float3 binormal : TEXCOORD5;
-#endif
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float4 tangent : TEXCOORD3;
+	#else
+		float3 tangent : TEXCOORD4;
+		float3 binormal : TEXCOORD5;
+	#endif
+	
 	float3 worldPosLight : TEXCOORD6;
 
 	#if defined(VERTEXLIGHT_ON)
-	float3 vertexLightColor : TEXCOORD7;
+		float3 vertexLightColor : TEXCOORD7;
 	#endif
 };
 
@@ -146,8 +109,7 @@ void ComputeVertexLightColor(inout Interpolators i) {
 }
 
 float3 CreateBinormal(float3 normal, float3 tangent, float binormalSign) {
-	return cross(normal, tangent.xyz) *
-		(binormalSign * unity_WorldTransformParams.w);
+	return cross(normal, tangent.xyz) * (binormalSign * unity_WorldTransformParams.w);
 }
 
 Interpolators MyVertexProgram(VertexData v) {
@@ -173,11 +135,11 @@ Interpolators MyVertexProgram(VertexData v) {
 UnityLight CreateLight(Interpolators i) {
 	UnityLight light;
 
-#if defined(POINT) || defined(POINT_COOKIE) || defined(SPOT)
-	light.dir = normalize(_WorldSpaceLightPos0.xyz - i.worldPos);
-#else
-	light.dir = _WorldSpaceLightPos0.xyz;
-#endif
+	#if defined(POINT) || defined(POINT_COOKIE) || defined(SPOT)
+		light.dir = normalize(_WorldSpaceLightPos0.xyz - i.worldPos);
+	#else
+		light.dir = _WorldSpaceLightPos0.xyz;
+	#endif
 
 	UNITY_LIGHT_ATTENUATION(attenuation, 0, i.worldPos);
 	light.color = _LightColor0.rgb * attenuation;
@@ -190,13 +152,13 @@ UnityIndirect CreateIndirectLight(Interpolators i) {
 	indirectLight.diffuse = 0;
 	indirectLight.specular = 0;
 
-#if defined(VERTEXLIGHT_ON)
-	indirectLight.diffuse = i.vertexLightColor;
-#endif
-
-#if defined(FORWARD_BASE_PASS)
-	indirectLight.diffuse += max(0, ShadeSH9(float4(i.normal, 1)));
-#endif
+	#if defined(VERTEXLIGHT_ON)
+		indirectLight.diffuse = i.vertexLightColor;
+	#endif
+	
+	#if defined(FORWARD_BASE_PASS)
+		indirectLight.diffuse += max(0, ShadeSH9(float4(i.normal, 1)));
+	#endif
 
 	return indirectLight;
 }
@@ -299,37 +261,109 @@ void geom(triangle Interpolators input[3], inout TriangleStream<g2f> tristream) 
 }
 
 void InitializeFragmentNormal(inout Interpolators i) {
-	float3 mainNormal = UnpackScaleNormal(tex2D(_NormalMap, i.uv.xy), _BumpScale);
-	float3 detailNormal = UnpackScaleNormal(tex2D(_DetailNormalMap, i.uv.zw), _DetailBumpScale);
-	float3 tangentSpaceNormal = BlendNormals(mainNormal, detailNormal);
+	//float3 mainNormal = UnpackScaleNormal(tex2D(_NormalMap, i.uv.xy), _BumpScale);
+	//float3 detailNormal = UnpackScaleNormal(tex2D(_DetailNormalMap, i.uv.zw), _DetailBumpScale);
+	//float3 tangentSpaceNormal = BlendNormals(mainNormal, detailNormal);
+	//
+	//#if defined(BINORMAL_PER_FRAGMENT)
+	//	float3 binormal = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	//#else
+	//	float3 binormal = i.binormal;
+	//#endif
+	
+	//i.normal = normalize(tangentSpaceNormal.x * i.tangent + tangentSpaceNormal.y * binormal + tangentSpaceNormal.z * i.normal);
+
+	float3 mainNormal1 = UnpackScaleNormal(_NormalMap1.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale1);
+	float3 detailNormal1 = UnpackScaleNormal(_DetailNormalMap1.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale1);
+	float3 tangentSpaceNormal1 = BlendNormals(mainNormal1, detailNormal1);
 
 	#if defined(BINORMAL_PER_FRAGMENT)
-		float3 binormal = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+		float3 binormal1 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
 	#else
-		float3 binormal = i.binormal;
+		float3 binormal1 = i.binormal;
 	#endif
 
-	i.normal = normalize(tangentSpaceNormal.x * i.tangent + tangentSpaceNormal.y * binormal + tangentSpaceNormal.z * i.normal);
-	//float3 mainNormal1 = UnpackScaleNormal(tex2D(_NormalMap1, i.uv.xy), _BumpScale1);
-	//float3 detailNormal1 = UnpackScaleNormal(tex2D(_DetailNormalMap1, i.uv.zw), _DetailBumpScale1);
-	//float3 blendNormal1 = BlendNormals(mainNormal1, detailNormal1);
+	float3 mainNormal2 = UnpackScaleNormal(_NormalMap2.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale2);
+	float3 detailNormal2 = UnpackScaleNormal(_DetailNormalMap2.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale2);
+	float3 tangentSpaceNormal2 = BlendNormals(mainNormal2, detailNormal2);
 
-	//float3 mainNormal2 = UnpackScaleNormal(tex2D(_NormalMap2, i.uv.xy), _BumpScale2);
-	//float3 detailNormal2 = UnpackScaleNormal(tex2D(_DetailNormalMap2, i.uv.zw), _DetailBumpScale2);
-	//float3 blendNormal2 = BlendNormals(mainNormal2, detailNormal2);
-	//
-	//float3 mainNormal3 = UnpackScaleNormal(tex2D(_NormalMap3, i.uv.xy), _BumpScale3);
-	//float3 detailNormal3 = UnpackScaleNormal(tex2D(_DetailNormalMap3, i.uv.zw), _DetailBumpScale3);
-	//float3 blendNormal3 = BlendNormals(mainNormal3, detailNormal3);
-	//
-	//float3 mainNormal4 = UnpackScaleNormal(tex2D(_NormalMap4, i.uv.xy), _BumpScale4);
-	//float3 detailNormal4 = UnpackScaleNormal(tex2D(_DetailNormalMap4, i.uv.zw), _DetailBumpScale4);
-	//float3 blendNormal4 = BlendNormals(mainNormal4, detailNormal4);
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float3 binormal2 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	#else
+		float3 binormal2 = i.binormal;
+	#endif
 
-	//i.normal = blendNormal.xzy + blendNormal1.xzy/* + blendNormal2.xzy + blendNormal3.xzy + blendNormal4.xzy*/;
+	float3 mainNormal3 = UnpackScaleNormal(_NormalMap3.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale3);
+	float3 detailNormal3 = UnpackScaleNormal(_DetailNormalMap3.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale3);
+	float3 tangentSpaceNormal3 = BlendNormals(mainNormal3, detailNormal3);
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float3 binormal3 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	#else
+		float3 binormal3 = i.binormal;
+	#endif
+
+	float3 mainNormal4 = UnpackScaleNormal(_NormalMap4.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale4);
+	float3 detailNormal4 = UnpackScaleNormal(_DetailNormalMap4.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale4);
+	float3 tangentSpaceNormal4 = BlendNormals(mainNormal4, detailNormal4);
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float3 binormal4 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	#else
+		float3 binormal4 = i.binormal;
+	#endif
+
+	float3 mainNormal5 = UnpackScaleNormal(_NormalMap5.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale5);
+	float3 detailNormal5 = UnpackScaleNormal(_DetailNormalMap5.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale5);
+	float3 tangentSpaceNormal5 = BlendNormals(mainNormal5, detailNormal5);
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float3 binormal5 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	#else
+		float3 binormal5 = i.binormal;
+	#endif
+
+	float3 mainNormal6 = UnpackScaleNormal(_NormalMap6.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale6);
+	float3 detailNormal6 = UnpackScaleNormal(_DetailNormalMap6.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale6);
+	float3 tangentSpaceNormal6 = BlendNormals(mainNormal6, detailNormal6);
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float3 binormal6 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	#else
+		float3 binormal6 = i.binormal;
+	#endif
+
+	float3 mainNormal7 = UnpackScaleNormal(_NormalMap7.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale7);
+	float3 detailNormal7 = UnpackScaleNormal(_DetailNormalMap7.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale7);
+	float3 tangentSpaceNormal7 = BlendNormals(mainNormal7, detailNormal7);
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float3 binormal7 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	#else
+		float3 binormal7 = i.binormal;
+	#endif
+
+	float3 mainNormal8 = UnpackScaleNormal(_NormalMap8.Sample(sampler_NormalMap1, i.uv.xy), _BumpScale8);
+	float3 detailNormal8 = UnpackScaleNormal(_DetailNormalMap8.Sample(sampler_DetailNormalMap1, i.uv.zw), _DetailBumpScale8);
+	float3 tangentSpaceNormal8 = BlendNormals(mainNormal8, detailNormal8);
+
+	#if defined(BINORMAL_PER_FRAGMENT)
+		float3 binormal8 = CreateBinormal(i.normal, i.tangent.xyz, i.tangent.w);
+	#else
+		float3 binormal8 = i.binormal;
+	#endif
+
+	i.normal = /*normalize(tangentSpaceNormal.x * i.tangent + tangentSpaceNormal.y * binormal + tangentSpaceNormal.z * i.normal) +*/
+			   normalize(tangentSpaceNormal1.x * i.tangent + tangentSpaceNormal1.y * binormal1 + tangentSpaceNormal1.z * i.normal) +
+			   normalize(tangentSpaceNormal2.x * i.tangent + tangentSpaceNormal2.y * binormal2 + tangentSpaceNormal2.z * i.normal) +
+			   normalize(tangentSpaceNormal3.x * i.tangent + tangentSpaceNormal3.y * binormal3 + tangentSpaceNormal3.z * i.normal) + 
+			   normalize(tangentSpaceNormal4.x * i.tangent + tangentSpaceNormal4.y * binormal4 + tangentSpaceNormal4.z * i.normal) + 
+			   normalize(tangentSpaceNormal5.x * i.tangent + tangentSpaceNormal5.y * binormal5 + tangentSpaceNormal5.z * i.normal) + 
+			   normalize(tangentSpaceNormal6.x * i.tangent + tangentSpaceNormal6.y * binormal6 + tangentSpaceNormal6.z * i.normal) + 
+			   normalize(tangentSpaceNormal7.x * i.tangent + tangentSpaceNormal7.y * binormal7 + tangentSpaceNormal7.z * i.normal) + 
+			   normalize(tangentSpaceNormal8.x * i.tangent + tangentSpaceNormal8.y * binormal8 + tangentSpaceNormal8.z * i.normal);
 }
 
-SamplerState sampler_Texture;
 
 float4 MyFragmentProgram(Interpolators i) : SV_TARGET{
 
@@ -339,10 +373,18 @@ float4 MyFragmentProgram(Interpolators i) : SV_TARGET{
 
 	float4 splat = tex2D(_MainTex, i.uvSplat);
 	//float3 albedo = tex2D(_MainTex, i.uv).rgb * _Tint.rgb;
-	float3 albedo = /*_Texture1.Sample(sampler_Texture1, i.uv.xy)*/ tex2D(_Texture1, i.uv.xy) * tex2D(_DetailTexture1, i.uv.zw) * splat.r * unity_ColorSpaceDouble +
-					tex2D(_Texture2, i.uv.xy) * tex2D(_DetailTexture2, i.uv.zw) * splat.g * unity_ColorSpaceDouble +
-					tex2D(_Texture3, i.uv.xy) * tex2D(_DetailTexture3, i.uv.zw) * splat.b * unity_ColorSpaceDouble +
-					tex2D(_Texture4, i.uv.xy) * tex2D(_DetailTexture4, i.uv.zw) * (1 - splat.r - splat.g - splat.b) * unity_ColorSpaceDouble;
+	//float3 albedo = tex2D(_Texture1, i.uv.xy) * tex2D(_DetailTexture1, i.uv.zw) * splat.r * unity_ColorSpaceDouble +
+	//				  tex2D(_Texture2, i.uv.xy) * tex2D(_DetailTexture2, i.uv.zw) * splat.g * unity_ColorSpaceDouble +
+	//				  tex2D(_Texture3, i.uv.xy) * tex2D(_DetailTexture3, i.uv.zw) * splat.b * unity_ColorSpaceDouble +
+	//				  tex2D(_Texture4, i.uv.xy) * tex2D(_DetailTexture4, i.uv.zw) * (1 - splat.r - splat.g - splat.b) * unity_ColorSpaceDouble;
+	float3 albedo = _Texture1.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture1.Sample(sampler_DetailTexture1, i.uv.zw) * splat.r * unity_ColorSpaceDouble +
+					_Texture2.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture2.Sample(sampler_DetailTexture1, i.uv.zw) * splat.g * unity_ColorSpaceDouble +
+					_Texture3.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture3.Sample(sampler_DetailTexture1, i.uv.zw) * splat.b * unity_ColorSpaceDouble +
+					_Texture4.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture4.Sample(sampler_DetailTexture1, i.uv.zw) * (1 - splat.r - splat.g - splat.b) * unity_ColorSpaceDouble +
+					_Texture5.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture5.Sample(sampler_DetailTexture1, i.uv.zw) * splat.r * unity_ColorSpaceDouble +
+					_Texture6.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture6.Sample(sampler_DetailTexture1, i.uv.zw) * splat.g * unity_ColorSpaceDouble +
+					_Texture7.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture7.Sample(sampler_DetailTexture1, i.uv.zw) * splat.b * unity_ColorSpaceDouble +
+					_Texture8.Sample(sampler_Texture1, i.uv.xy) * _DetailTexture8.Sample(sampler_DetailTexture1, i.uv.zw) * (1 - splat.r - splat.g - splat.b) * unity_ColorSpaceDouble;
 
 	float3 specularTint;
 	float oneMinusReflectivity;
