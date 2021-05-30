@@ -96,7 +96,6 @@ float4 RotateAroundXInDegrees(float4 vertex, float degrees)
 	sincos(alpha, sina, cosa);
 	float2x2 m = float2x2(cosa, sina,-sina, cosa);
 	return float4(mul(m, vertex.zy), vertex.xw).zyxw;
-	//return float4(mul(m, vertex.xz), vertex.xw).xzyw;
 }
 
 //Funzione che permette di cambiare l'asse Z del GameObject
