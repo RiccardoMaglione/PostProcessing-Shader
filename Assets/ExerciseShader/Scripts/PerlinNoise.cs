@@ -26,11 +26,11 @@ public class PerlinNoise : MonoBehaviour
             offsetX = Random.Range(0f, 99999f);
             offsetY = Random.Range(0f, 99999f);
             NoiseSplatMap = GenerateTexture();
-            ShaderMaterial.SetTexture("_MainTex", NoiseSplatMap);
+            ShaderMaterial.SetTexture("_SplatTex", NoiseSplatMap);
         }
         else
         {
-            ShaderMaterial.SetTexture("_MainTex", ShaderSplatMap);
+            ShaderMaterial.SetTexture("_SplatTex", ShaderSplatMap);
         }
     }
 

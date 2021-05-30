@@ -17,9 +17,19 @@
 		_Texture8("Texture 8", 2D) = "white" {}											//Texure 8 che formano la splat map
 
 		_Offset("Offset", Vector) = (10,0,0,0)											//Offset he consente di modificare la distanza degli oggetti creati dal geometry
-		_FirstAngle("FirstAngle", Float) = 0											//Valore della rotazione del primo GameObject
-		_SecondAngle("SecondAngle", Float) = 0											//Valore della rotazione del Secondo GameObject
-		_ThirdAngle("ThirdAngle", Float) = 0											//Valore della rotazione del Terzo GameObject
+
+		_FirstAxisX("First GameObject Axis X", Float) = 0										//Valore della rotazione sull'asse X del primo GameObject
+		_FirstAxisY("First GameObject Axis Y", Float) = 0										//Valore della rotazione sull'asse Y del primo GameObject
+		_FirstAxisZ("First GameObject Axis Z", Float) = 0										//Valore della rotazione sull'asse Z del primo GameObject
+		
+		_SecondAxisX("Second GameObject Axis X", Float) = 0										//Valore della rotazione sull'asse X del Secondo GameObject
+		_SecondAxisY("Second GameObject Axis Y", Float) = 0										//Valore della rotazione sull'asse Y del Secondo GameObject
+		_SecondAxisZ("Second GameObject Axis Z", Float) = 0										//Valore della rotazione sull'asse Z del Secondo GameObject
+
+		_ThirdAxisX("Third GameObject Axis X", Float) = 0										//Valore della rotazione sull'asse X del Terzo GameObject
+		_ThirdAxisY("Third GameObject Axis Y", Float) = 0										//Valore della rotazione sull'asse Y del Terzo GameObject
+		_ThirdAxisZ("Third GameObject Axis Z", Float) = 0										//Valore della rotazione sull'asse Z del Terzo GameObject
+
 
 		[Toggle(Duplication)] _ToggleDuplication("ToggleDuplication", Float) = 1		//Toggle che consente di attivare o disattivare il geometry shader
 
@@ -35,51 +45,51 @@
 
 	}
 
-		CGINCLUDE
+	CGINCLUDE
 
-#define BINORMAL_PER_FRAGMENT
+	#define BINORMAL_PER_FRAGMENT
 
-			ENDCG
+	ENDCG
 
-			SubShader
+	SubShader
+	{
+		Pass
 		{
-			Pass
-			{
-				Tags { "LightMode" = "ForwardBase" }										//Tag che permette l'uso della luce derivata dalla directional light
+			Tags { "LightMode" = "ForwardBase" }										//Tag che permette l'uso della luce derivata dalla directional light
 
-				HLSLPROGRAM
-				#pragma target 4.0															//Target per utilizzare funzionalità specifiche - 4.0 per l'utilizzo della geometry
-				#pragma multi_compile _ VERTEXLIGHT_ON										//Pragma che aggiunge il supporto al vertex light
-				#pragma vertex MyVertexProgram												//Definizione del pragma del vertex
-				#pragma fragment MyFragmentProgram											//Definizione del pragma del fragment
-				#pragma geometry geom														//Definizione del pragma del geometry
-				#pragma shader_feature Duplication											//Definizione della feature della duplication, usata per l'attivazione del geometry
+			HLSLPROGRAM
+			#pragma target 4.0															//Target per utilizzare funzionalità specifiche - 4.0 per l'utilizzo della geometry
+			#pragma multi_compile _ VERTEXLIGHT_ON										//Pragma che aggiunge il supporto al vertex light
+			#pragma vertex MyVertexProgram												//Definizione del pragma del vertex
+			#pragma fragment MyFragmentProgram											//Definizione del pragma del fragment
+			#pragma geometry geom														//Definizione del pragma del geometry
+			#pragma shader_feature Duplication											//Definizione della feature della duplication, usata per l'attivazione del geometry
 
-				#define FORWARD_BASE_PASS
-				#include "UnityCG.cginc"													//Accesso alle funzionalità del linguaggio CG
-				#include "PassLighting.cginc"											//Referenza al file cginc che contiene lo shader
+			#define FORWARD_BASE_PASS
+			#include "UnityCG.cginc"													//Accesso alle funzionalità del linguaggio CG
+			#include "PassLighting.cginc"												//Referenza al file cginc che contiene lo shader
 
-				ENDHLSL
-			}
-			Pass
-			{
-				Tags { "LightMode" = "ForwardAdd" }											//Tag che permette l'uso degli altri punti luce
-
-				Blend One One																//Utilizzato per blendare la base con l'addittive
-				ZWrite Off																	//Disattiva la scrittura nel depth buffer
-
-				HLSLPROGRAM
-				#pragma target 4.0															//Target per utilizzare funzionalità specifiche - 4.0 per l'utilizzo della geometry
-				#pragma multi_compile_fwdadd												//Pragma per l'utilizzo dei punti luci
-				#pragma vertex MyVertexProgram												//Definizione del pragma del vertex
-				#pragma fragment MyFragmentProgram											//Definizione del pragma del fragment
-				#pragma geometry geom														//Definizione del pragma del geometry
-				#pragma shader_feature Duplication											//Definizione della feature della duplication, usata per l'attivazione del geometry
-
-				#include "UnityCG.cginc"													//Accesso alle funzionalità del linguaggio CG
-				#include "PassLighting.cginc"											//Referenza al file cginc che contiene lo shader
-
-				ENDHLSL
-			}
+			ENDHLSL
 		}
+		Pass
+		{
+			Tags { "LightMode" = "ForwardAdd" }											//Tag che permette l'uso degli altri punti luce
+
+			Blend One One																//Utilizzato per blendare la base con l'addittive
+			ZWrite Off																	//Disattiva la scrittura nel depth buffer
+
+			HLSLPROGRAM
+			#pragma target 4.0															//Target per utilizzare funzionalità specifiche - 4.0 per l'utilizzo della geometry
+			#pragma multi_compile_fwdadd												//Pragma per l'utilizzo dei punti luci
+			#pragma vertex MyVertexProgram												//Definizione del pragma del vertex
+			#pragma fragment MyFragmentProgram											//Definizione del pragma del fragment
+			#pragma geometry geom														//Definizione del pragma del geometry
+			#pragma shader_feature Duplication											//Definizione della feature della duplication, usata per l'attivazione del geometry
+
+			#include "UnityCG.cginc"													//Accesso alle funzionalità del linguaggio CG
+			#include "PassLighting.cginc"												//Referenza al file cginc che contiene lo shader
+
+			ENDHLSL
+		}
+	}
 }
